@@ -55,7 +55,7 @@ type Config struct {
 	logLevel                          xlog.Level
 	maximumGoogleChromeRpccBufferSize int64
 	defaultGoogleChromeRpccBufferSize int64
-	httpPathNamespace 				  string
+	httpPathNamespace                 string
 }
 
 // DefaultConfig returns the default

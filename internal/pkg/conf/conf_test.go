@@ -380,7 +380,6 @@ func TestHttpPathNamespaceFromEnv(t *testing.T) {
 	os.Unsetenv(HttpPathNamespace)
 }
 
-
 func TestGetters(t *testing.T) {
 	result := DefaultConfig()
 	assert.Equal(t, result.maximumWaitTimeout, result.MaximumWaitTimeout())
