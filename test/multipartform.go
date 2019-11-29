@@ -2,6 +2,7 @@ package test
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"mime/multipart"
 	"os"
@@ -71,6 +72,7 @@ func multipartForm(
 	writer := multipart.NewWriter(body)
 	defer writer.Close()
 	for _, fpath := range formFilePaths {
+		fmt.Printf("????????????????? %s", fpath)
 		file, err := os.Open(fpath)
 		require.Nil(t, err)
 		part, err := writer.CreateFormFile("foo", filepath.Base(fpath))

@@ -37,6 +37,8 @@ const (
 	// DefaultGoogleChromeRpccBufferSizeEnvVar contains the name
 	// of the environment variable "DEFAULT_GOOGLE_CHROME_RPCC_BUFFER_SIZE".
 	DefaultGoogleChromeRpccBufferSizeEnvVar string = "DEFAULT_GOOGLE_CHROME_RPCC_BUFFER_SIZE"
+
+	HttpPathNamespace string = "HTTP_PATH_NAMESPACE"
 )
 
 // Config contains the application
@@ -53,6 +55,7 @@ type Config struct {
 	logLevel                          xlog.Level
 	maximumGoogleChromeRpccBufferSize int64
 	defaultGoogleChromeRpccBufferSize int64
+	httpPathNamespace 				  string
 }
 
 // DefaultConfig returns the default
@@ -70,6 +73,7 @@ func DefaultConfig() Config {
 		logLevel:                          xlog.InfoLevel,
 		maximumGoogleChromeRpccBufferSize: 104857600, // ~100 MB
 		defaultGoogleChromeRpccBufferSize: 1048576,   // 1 MB
+		httpPathNamespace:                 "/gotenberg",
 	}
 }
 
@@ -173,6 +177,15 @@ func FromEnv() (Config, error) {
 		if err != nil {
 			return c, err
 		}
+
+		httpPathNamespace, err := xassert.StringFromEnv(
+			HttpPathNamespace,
+			string(c.httpPathNamespace),
+		)
+		c.httpPathNamespace = httpPathNamespace
+		if err != nil {
+			return c, err
+		}
 		return c, nil
 	}
 	result, err := resolver()
@@ -252,4 +265,10 @@ func (c Config) MaximumGoogleChromeRpccBufferSize() int64 {
 //  Google Chrome rpcc buffer size from the configuration.
 func (c Config) DefaultGoogleChromeRpccBufferSize() int64 {
 	return c.defaultGoogleChromeRpccBufferSize
+}
+
+// HttpPathNamespace returns the default
+// In a micro services env what path should the server occupy i.e domain.com/:gotenberg/convert/url for example this is the default
+func (c Config) HttpPathNamespace() string {
+	return c.httpPathNamespace
 }

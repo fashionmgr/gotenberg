@@ -357,6 +357,30 @@ func TestDefaultGoogleChromeRpccBufferSizeFromEnv(t *testing.T) {
 	os.Unsetenv(DefaultGoogleChromeRpccBufferSizeEnvVar)
 }
 
+func TestHttpPathNamespaceFromEnv(t *testing.T) {
+	var (
+		expected Config
+		result   Config
+		err      error
+	)
+	// HTTP_PATH_NAMESPACE correctly set.
+	os.Setenv(HttpPathNamespace, "/pdf_gen/")
+	expected = DefaultConfig()
+	expected.httpPathNamespace = "/pdf_gen/"
+	result, err = FromEnv()
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+	os.Unsetenv(HttpPathNamespace)
+
+	// HTTP_PATH_NAMESPACE wrongly set fallsback to default.
+	os.Setenv(HttpPathNamespace, "")
+	expected = DefaultConfig()
+	result, err = FromEnv()
+	assert.Equal(t, expected, result)
+	os.Unsetenv(HttpPathNamespace)
+}
+
+
 func TestGetters(t *testing.T) {
 	result := DefaultConfig()
 	assert.Equal(t, result.maximumWaitTimeout, result.MaximumWaitTimeout())
@@ -370,4 +394,5 @@ func TestGetters(t *testing.T) {
 	assert.Equal(t, result.logLevel, result.LogLevel())
 	assert.Equal(t, result.maximumGoogleChromeRpccBufferSize, result.MaximumGoogleChromeRpccBufferSize())
 	assert.Equal(t, result.defaultGoogleChromeRpccBufferSize, result.DefaultGoogleChromeRpccBufferSize())
+	assert.Equal(t, result.httpPathNamespace, result.HttpPathNamespace())
 }
