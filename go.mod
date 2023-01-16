@@ -3,7 +3,7 @@ module github.com/thecodingmachine/gotenberg
 go 1.14
 
 require (
-	github.com/dustin/go-humanize v1.0.0
+	github.com/dustin/go-humanize v1.0.1
 	github.com/kr/text v0.2.0 // indirect
 	github.com/labstack/echo/v4 v4.3.0
 	github.com/labstack/gommon v0.3.0
